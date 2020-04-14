@@ -1,1 +1,197 @@
-<p>data works!</p>
+<h4>Formularios <small>Reactivo</small></h4>
+<hr>
+<form autocomplete="off" [formGroup]="forma" (ngSubmit)="guardar()">
+
+  <div>
+
+    <div class="form-group row">
+      <label class="col-2 col-form-label">Nombre</label>
+      <div class="col">
+
+        <input class="form-control"
+               type="text"
+               placeholder="Nombre"
+               [class.is-invalid]="nombreNoValido"
+               [class.is-valid]="forma.get('nombre').valid"
+               formControlName="nombre">
+        <small *ngIf="nombreNoValido" class="text-danger">
+            Al menos 5 caracteres
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-2 col-form-label">Apellido</label>
+      <div class="col">
+
+        <input class="form-control"
+               type="text"
+               placeholder="Apellido"
+               [class.is-invalid]="apellidoNoValido"
+               [class.is-valid]="forma.get('apellido').valid"
+               formControlName="apellido">
+        <small *ngIf="apellidoNoValido" class="text-danger">
+            Campo requerido
+        </small>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Correo</label>
+    <div class="col">
+
+        <input class="form-control"
+             type="email"
+             placeholder="Correo electrónico"
+             [class.is-invalid]="correoNoValido"
+             [class.is-valid]="forma.get('correo').valid"
+             formControlName="correo">
+        <small *ngIf="correoNoValido" class="text-danger">
+            Ingrese un correo valido
+        </small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Usuario</label>
+    <div class="col">
+
+        <input class="form-control"
+             type="email"
+             placeholder="Nombre de usuario"
+             [class.is-invalid]="usuarioNoValido"
+             [class.is-valid]="forma.get('usuario').valid"
+             formControlName="usuario">
+        <small *ngIf="usuarioNoValido" class="text-danger">
+          El usuario ya existe
+        </small>
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Contraseña</label>
+    <div class="col">
+
+        <input class="form-control"
+             type="password"
+             placeholder="Contraseña"
+             [class.is-invalid]="pass1NoValido"
+             formControlName="pass1">
+        <small *ngIf="pass1NoValido" class="text-danger">
+            Ingrese una contraseña
+        </small>
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Repetir Contraseña</label>
+    <div class="col">
+
+        <input class="form-control"
+             type="password"
+             placeholder="Repetir la contraseña"
+             formControlName="pass2"
+             [class.is-invalid]="pass2NoValido">
+        <small *ngIf="pass2NoValido" class="text-danger">
+            Contraseña invalida
+        </small>
+    </div>
+  </div>
+
+
+  <div class="form-group row" formGroupName="direccion">
+    <label class="col-2 col-form-label">Dirección</label>
+    <div class="form-row col">
+        <div class="col">
+            <input  type="text" 
+                    name="calle" 
+                    class="form-control"
+                    placeholder="Calle"
+                    [class.is-invalid]="calleNoValido"
+                    [class.is-valid]="forma.get('direccion.calle').valid"
+                    formControlName="calle">
+            <small *ngIf="calleNoValido" class="text-danger">
+                Al menos 5 caracteres
+            </small>
+        </div>
+
+        <div class="col">
+            <input  type="number" 
+                    name="numero" 
+                    class="form-control"
+                    placeholder="Numero"
+                    [class.is-invalid]="numeroNoValido"
+                    [class.is-valid]="forma.get('direccion.numero').valid"
+                    formControlName="numero">
+            <small *ngIf="numeroNoValido" class="text-danger">
+                Un numero mayor a 0 (cero)
+            </small>
+        </div>
+
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="form-row col">
+    
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Pasatiempos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody formArrayName="pasatiempos">
+            <tr *ngFor="let control of pasatiempos.controls; let i = index">
+                <td>{{ i+1 }}</td>
+                <td>
+                    <input  type="text"
+                            class="form-control"
+                            [formControlName]="i">
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger" (click)="borrarPasatiempo(i)">
+                        Borrar
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button type="button" (click)="agregarPasatiempo()" class="btn btn-primary mt-3 mb-5 btn-block">
+        + Agregar
+    </button>
+    
+    
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">&nbsp;</label>
+    <div class="input-group col">
+      <button type="submit" class="btn btn-primary btn-block">
+        Guardar
+      </button>
+    </div>
+  </div>
+
+</form>
+
+
+
+<hr>
+<pre>
+    Estado del formulario: {{ forma.valid }}
+    <br>
+    Status: {{ forma.status }}
+</pre>
+
+<pre>
+    {{ forma.value | json }}
+</pre>

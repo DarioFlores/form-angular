@@ -1,7 +1,7 @@
 <h4>Formularios <small>template</small></h4>
 <hr>
 
-<form (ngSubmit)="guardar()" #f novalidate>
+<form (ngSubmit)="guardar(f)" #f="ngForm" novalidate>
 
   <div>
 
@@ -13,8 +13,23 @@
                type="text"
                placeholder="Nombre"
                required
-               ngModel
+               [class.is-invalid]="nombre.invalid && nombre.touched"
+               [ngModel]="usuario.nombre"
+               minlength="5"
+               #nombre="ngModel"
                name="nombre">
+
+        <small class="form-text text-danger"
+               *ngIf="nombre.invalid && nombre.touched">
+          Ingrese 5 letras
+        </small>
+
+        <!-- <div *ngIf="nombre.errors?.required">
+            Este campo es requerido
+        </div>
+        <div *ngIf="nombre.errors?.minlength">
+            Al menos 5 caracteres
+        </div> -->
       </div>
     </div>
 
@@ -24,10 +39,25 @@
 
         <input class="form-control"
                type="text"
-               required
-               ngModel
+               minlength="5"
+               placeholder="Apellido"
                name="apellido"
-               placeholder="Apellido">
+               required
+               [ngModel]="usuario.apellido"
+               [class.is-invalid]="apellido.invalid && apellido.touched"
+               #apellido="ngModel"
+               >
+
+        <small class="form-text text-danger"
+               *ngIf="apellido.invalid && apellido.touched">
+          Ingrese 5 letras
+        </small>
+        <!-- <div *ngIf="apellido.errors?.required">
+            Este campo es requerido
+        </div>
+        <div *ngIf="apellido.errors?.minlength">
+            Al menos 5 caracteres
+        </div> -->
       </div>
     </div>
 
@@ -35,14 +65,45 @@
 
   <div class="form-group row">
     <label class="col-2 col-form-label">Correo</label>
-    <div class="col-md-8">
+    <div class="col-8">
 
-      <input class="form-control"
+        <input class="form-control"
                type="email"
+               name="email"
+               placeholder="Correo Electrónico"
+               [class.is-invalid]="email.invalid && email.touched"
                required
-               ngModel
-               name="nombre"
-               placeholder="Correo electrónico">
+               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+               [ngModel]="usuario.correo" 
+               #email="ngModel"
+               >
+ 
+        <small class="form-text text-danger"
+               *ngIf="apellido.invalid && apellido.touched">
+          El correo es obligatorio
+        </small>
+      <!-- <div *ngIf="apellido.errors?.required">
+         Este campo es requerido
+      </div>
+      <div *ngIf="apellido.errors?.minlength">
+          Al menos 5 caracteres
+      </div> -->
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Pais</label>
+    <div class="col-8">
+
+      <select class="form-control" 
+              name="pais" 
+              [class.is-invalid]="pais.invalid && pais.touched"
+              [disabled]="paises.length == 0" 
+              [ngModel]="usuario.pais"
+              #pais="ngModel" 
+              required>
+        <option *ngFor="let item of paises" [value]="item.codigo">{{ item.nombre }}</option>
+      </select>
     </div>
   </div>
 
@@ -51,10 +112,10 @@
   <div class="form-group row">
     <label class="col-2 col-form-label">&nbsp;</label>
     <div class="input-group col-md-8">
-      <button type="submit" class="btn btn-outline-primary">
+      <button type="submit" [disabled]="f.invalid" class="btn btn-outline-primary">
         Guardar
       </button>
     </div>
-  </div>
+  </div> 
 
 </form>
